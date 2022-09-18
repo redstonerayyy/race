@@ -1,7 +1,7 @@
 import string
 
 tokentypes = [
-    "identifier",
+    "string",
     "operator",
     "punctuation",
     "keyword",
@@ -18,16 +18,18 @@ class Lexer:
     def __init__(self, lexerlines : string) -> None:
         self.lexerlines = lexerlines
         self.index = 0
+        self.ignorewhitespace = True
         self.buffer = ""
         self.tokens = []
 
     def start(self):
         for line in self.lexerlines:
             try:
-                while line[self.index]:
+                while True:
                     self.match(line[self.index])
 
             except: IndexError
+
 
             # terminate add line ending and reset index for next line
             self.terminate()
@@ -45,6 +47,9 @@ class Lexer:
     def isbrace(self, char : string) -> bool:
         return char in ["{", "}"]
 
+    def isquotation(self, char : string) -> bool:
+        return char == '"'
+
     def terminate(self):
         # terminate identifier literals if buffer is not empty
         if len(self.buffer) > 0:
@@ -55,7 +60,7 @@ class Lexer:
             self.buffer = ""
 
     def match(self, char : string):
-        if self.iswhitespace(char):
+        if self.iswhitespace(char) and self.ignorewhitespace:
             self.terminate()
 
         elif self.isbrace(char):
@@ -66,6 +71,13 @@ class Lexer:
                 tokentypes[2],
                 char
             ])
+
+        elif self.isquotation(char):
+            if self.ignorewhitespace:
+                self.ignorewhitespace = False
+            else:
+                self.ignorewhitespace = True
+                self.terminate()
 
         elif char == ",":
             self.terminate()

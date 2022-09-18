@@ -1,13 +1,13 @@
 CC = /usr/bin/gcc
 CXX = /usr/bin/g++
-CFLAGS = "-Wall"
-CXXFLAGS = "-Wall"
+CFLAGS = "-Wall -O2"
+CXXFLAGS = "-Wall -O2"
 
 
 executable hello {
     include {}
     files {
-        $src/main.cpp,
+        $src/main.cpp
         $src/foo.cpp
     }
 }
