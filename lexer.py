@@ -1,18 +1,6 @@
 import string
 
-tokentypes = [
-    "string",
-    "operator",
-    "punctuation",
-    "keyword",
-]
-
-keywords = [
-    "executable",
-    "library",
-    "include",
-    "files",
-]
+from language import *
 
 class Lexer:
     def __init__(self, lexerlines : string) -> None:
