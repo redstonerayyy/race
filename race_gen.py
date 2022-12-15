@@ -8,6 +8,8 @@ from race_util import readfile
 from race_lexer import Lexer
 # parser to parse tokens to instructions
 import race_parser
+# generate files for building
+from race_ninja import NinjaGenerator
 
 def main() -> None:
     # get command line arguments
@@ -23,12 +25,14 @@ def main() -> None:
         
     # lex main configuration
     tokens = Lexer(mainfilecontent).start()
-    print(tokens)
+    # print(tokens)
     
     # parse configuration
     instructions = race_parser.Parser(tokens).start()
-    print(instructions)
+    # print(instructions)
+
     # generate build.ninja files
+    filecontent = NinjaGenerator(instructions).start()
 
 if __name__ == "__main__":
     main()

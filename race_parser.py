@@ -45,8 +45,9 @@ class Parser:
 
         elif self.type_buffer == ["keyword", "punctuation"]: # include, files
             if (self.value_buffer[0] == "include" or self.value_buffer[0] == "files") and self.isbrace(self.value_buffer[1]):
-                # add include/files instruction and clear buffers
+                # add include/files instruction, increment brace and clear buffers
                 self.instructions.append([self.value_buffer[0], self.braces])
+                self.braces += 1
                 self.type_buffer = []
                 self.value_buffer = []
 
@@ -60,7 +61,7 @@ class Parser:
         elif self.type_buffer == ["string"]:
             # check if it is operator, else add string as single value and clear buffers
             if self.tokens[self.index + 1][0] != "operator":
-                self.instructions.append(["string", self.value_buffer[0]])
+                self.instructions.append(["string", self.value_buffer[0], self.braces])
                 self.type_buffer = []
                 self.value_buffer = []
         
