@@ -7,7 +7,7 @@ CXXFLAGS = "-Wall -O2"
 executable hello {
     include {}
     files {
-        $src/main.cpp
-        $src/foo.cpp
+        src/main.cpp
+        src/foo.cpp
     }
 }

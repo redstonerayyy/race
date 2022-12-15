@@ -1,23 +1,26 @@
 import string
 
-from language import *
+keywords = [
+    "executable",
+    "include",
+    "files",
+]
 
 class Lexer:
-    def __init__(self, lexerlines : string) -> None:
+    def __init__(self, lexerlines : list) -> None:
         self.lexerlines = lexerlines
         self.index = 0
         self.ignorewhitespace = True
         self.buffer = ""
         self.tokens = []
 
-    def start(self):
+    def start(self) -> list[list[str]]:
         for line in self.lexerlines:
             try:
                 while True:
                     self.match(line[self.index])
 
             except: IndexError
-
 
             # terminate add line ending and reset index for next line
             self.terminate()
@@ -26,7 +29,7 @@ class Lexer:
         return self.tokens[:]
 
     
-    def next(self):
+    def next(self) -> None:
         self.index += 1
 
     def iswhitespace(self, char : string) -> bool:
@@ -38,16 +41,16 @@ class Lexer:
     def isquotation(self, char : string) -> bool:
         return char == '"'
 
-    def terminate(self):
+    def terminate(self) -> None:
         # terminate identifier literals if buffer is not empty
         if len(self.buffer) > 0:
             self.tokens.append([
-                tokentypes[0] if not(self.buffer in keywords) else tokentypes[3],
+                "string" if not(self.buffer in keywords) else "keyword",
                 self.buffer
             ])
             self.buffer = ""
 
-    def match(self, char : string):
+    def match(self, char : string) -> None:
         if self.iswhitespace(char) and self.ignorewhitespace:
             self.terminate()
 
@@ -56,7 +59,7 @@ class Lexer:
             
             # punctuation
             self.tokens.append([
-                tokentypes[2],
+                "punctuation",
                 char
             ])
 
@@ -72,7 +75,7 @@ class Lexer:
 
             # punctuation
             self.tokens.append([
-                tokentypes[2],
+                "punctuation",
                 char
             ])
 
@@ -81,7 +84,7 @@ class Lexer:
 
             # operator
             self.tokens.append([
-                tokentypes[1],
+                "operator",
                 char
             ])
 
