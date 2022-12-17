@@ -14,7 +14,7 @@ class Lexer:
         self.buffer = ""
         self.tokens = []
 
-    def start(self) -> list[list[str]]:
+    def start(self) -> tuple:
         for line in self.lexerlines:
             try:
                 while True:

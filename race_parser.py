@@ -22,7 +22,52 @@ class Parser:
             self.match()
             self.index += 1
 
-        return self.instructions[:]
+        return self.applystructure()
+
+    def parsetarget(self, target, depth):
+        target["childs"] = []
+        if self.instructions[0][-1] == depth: 
+            ins = self.instructions.pop(0)
+            if ins[0] in ["include", "files"]:
+                child = {"name": ins[0]}
+                try:
+                    while self.instructions[0][-1] == depth + 1:
+                        self.parsetarget(child, depth + 1)
+                        target["childs"].append(child)
+                except IndexError: # empty remaining instruction
+                    pass
+
+            else:
+                target["childs"].append(ins)
+        
+
+    def applystructure(self):
+        # pack variables in dict
+        buildvars = {}
+        for ins in self.instructions:
+            if ins[0] == "assignment":
+                buildvars[ins[1]] = ins[3]
+
+        # filter out assignments
+        self.instructions = list(filter(lambda ins: ins[0] != "assignment", self.instructions))
+        # loop over remaining instructions
+        targets = []
+        while self.instructions:
+            ins = self.instructions.pop(0)
+            if ins[0] == "executable":
+                target = {}
+                target["type"] = "executable"
+                target["name"] = ins[1]
+                try:
+                    while self.instructions[0][-1] == 1:
+                        self.parsetarget(target, 1)
+                except IndexError: # empty remaining instruction
+                    pass
+                targets.append(target)
+
+        print(targets)
+        return buildvars, targets
+
 
     def isbrace(self, char : string) -> bool:
         return char in ["{", "}"]
