@@ -5,7 +5,9 @@ CXXFLAGS = "-Wall -O2"
 BUILDDIR = "build"
 
 executable hello {
-    include {}
+    include {
+        ./src
+    }
     files {
         src/main.cpp
         src/foo.cpp

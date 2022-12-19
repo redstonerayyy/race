@@ -25,17 +25,20 @@ class Parser:
         return self.applystructure()
 
     def parsetarget(self, target, depth):
-        target["childs"] = []
+        if not "childs" in target:
+            target["childs"] = []
         if self.instructions[0][-1] == depth: 
             ins = self.instructions.pop(0)
             if ins[0] in ["include", "files"]:
-                child = {"name": ins[0]}
                 try:
+                    child = {"name": ins[0]}
                     while self.instructions[0][-1] == depth + 1:
                         self.parsetarget(child, depth + 1)
-                        target["childs"].append(child)
+
                 except IndexError: # empty remaining instruction
                     pass
+                
+                target["childs"].append(child)
 
             else:
                 target["childs"].append(ins)
@@ -46,7 +49,9 @@ class Parser:
         buildvars = {}
         for ins in self.instructions:
             if ins[0] == "assignment":
-                buildvars[ins[1]] = ins[3]
+                buildvars[ins[1].lower()] = ins[3]
+        
+        print(buildvars)
 
         # filter out assignments
         self.instructions = list(filter(lambda ins: ins[0] != "assignment", self.instructions))
@@ -65,7 +70,6 @@ class Parser:
                     pass
                 targets.append(target)
 
-        print(targets)
         return buildvars, targets
 
 

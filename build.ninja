@@ -1,10 +1,9 @@
+cc = /usr/bin/gcc
+cxx = /usr/bin/g++
+cflags = -Wall -O2
+cxxflags = -Wall -O2
 builddir = build
-cflags = -Wall
-ldflags = -L$builddir
-cxx = g++
-cc = gcc
-includedir = -I./
-
+includedir = -I./src
 rule cxx
     command = $cxx -MMD -MT $out -MF $out.d $cflags $includedir -c $in -o $out
     description = CXX $out
@@ -15,8 +14,8 @@ rule link
     command = $cxx $ldflags -o $out $in $libs
     description = LINK $out
 
-build $builddir/foo.o: cxx foo.cpp
+build src/main.o: cxx src/main.cpp
 
-build $builddir/main.o: cxx main.cpp
+build src/foo.o: cxx src/foo.cpp
 
-build $builddir/hello: link $builddir/main.o
+build hello: link src/main.o src/foo.o
