@@ -1,5 +1,6 @@
 # path functions
 import os
+import subprocess
 # generates argsparser and args variables
 from race_args import getargs
 # read content of file
@@ -34,6 +35,8 @@ def main() -> None:
     # generate build.ninja files
 
     filecontent = NinjaGenerator(buildvars, targets).start()
+
+    subprocess.run("ninja")
 
 if __name__ == "__main__":
     main()
