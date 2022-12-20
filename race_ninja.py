@@ -52,8 +52,11 @@ class NinjaGenerator:
             # make string
             # variables
             self.filebuffer += buildstring
+
             if includepaths:
                 self.filebuffer += "includedir = " + "".join(includepaths)
+
+            self.filebuffer += "\n"
 
             # add rules
             self.filebuffer += rules + "\n"
