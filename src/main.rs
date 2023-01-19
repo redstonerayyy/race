@@ -1,8 +1,7 @@
 use std::fs;
 
-// use crate::lexer;
-
-use race::lexer::*;
+mod lexer;
+use crate::lexer::lexer::*;
 
 fn main() {
     // read file
