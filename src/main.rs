@@ -6,11 +6,7 @@ use crate::lexer::lexer::*;
 use std::fs;
 
 fn main() {
-    // read file
-    let file_path = String::from("test/main.race");
-    let contents = fs::read_to_string(file_path).expect("Could not read file!");
-
-    // lex file
-    let lex = Lexer::new(contents);
-    lex.start();
+    // read file as vec<u8>
+    let contents = fs::read_to_string("test/main.race").expect("couldn't read file");
+    let lexer = Lexer::new(contents);
 }

@@ -1,17 +1,14 @@
-pub struct Lexer {
-    source: String,
+use std::iter::Peekable;
+use std::str::Chars;
+
+pub struct Lexer<'a> {
+    source: Peekable<Chars<'a>>,
 }
 
-impl Lexer {
-    pub fn new(s: String) -> Self {
-        Lexer { source: s }
-    }
-
-    pub fn start(&self) -> bool {
-        true
-    }
-
-    pub fn getsource(&self) -> String {
-        self.source.clone()
+impl<'a> Lexer<'a> {
+    pub fn new(sourcestring: &String) -> Lexer<'a> {
+        Lexer {
+            source: sourcestring.chars().peekable(),
+        }
     }
 }
