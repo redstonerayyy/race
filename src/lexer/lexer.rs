@@ -6,9 +6,17 @@ pub struct Lexer<'a> {
 }
 
 impl<'a> Lexer<'a> {
-    pub fn new(sourcestring: &String) -> Lexer<'a> {
+    pub fn new(sourcestring: &'a String) -> Lexer<'a> {
         Lexer {
             source: sourcestring.chars().peekable(),
+        }
+    }
+
+    pub fn start(&mut self) {
+        match self.source.next() {
+            Some(x) if x.is_alphabetic() => println!("alpha"),
+            Some(x) if x.is_numeric() => println!("digit"),
+            _ => println!("unknown"),
         }
     }
 }
